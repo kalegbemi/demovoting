@@ -1,12 +1,13 @@
 package com.example.demovoting.service;
 
+
+
 import com.example.demovoting.dto.CandidateEmailDetails;
 import com.example.demovoting.util.MessageUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,17 +18,18 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class EmailService {
     public static final String SUBJECT = "welcome Onboard";
+
+    private String From = "kydjams@gmail.com"
     private static final String UTF_8_ENCODING = "UTF-8";
-    @Value("${EMAIL_ADDRESS}")
-    private String From;
+   
 
     @Autowired
     private JavaMailSender mailSender;
 
     public void sendVoterMessage(String email, String name, String role) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        try {
 
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(From);
             message.setTo(email);
             message.setSubject(SUBJECT);
@@ -83,4 +85,3 @@ public class EmailService {
         }
 
     }
-}
