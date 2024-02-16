@@ -19,9 +19,9 @@ import org.springframework.stereotype.Component;
 public class EmailService {
     public static final String SUBJECT = "welcome Onboard";
 
-    private String From = "kydjams@gmail.com"
+    private final String From = "kydjams@gmail.com";
     private static final String UTF_8_ENCODING = "UTF-8";
-   
+
 
     @Autowired
     private JavaMailSender mailSender;
@@ -33,42 +33,42 @@ public class EmailService {
             message.setFrom(From);
             message.setTo(email);
             message.setSubject(SUBJECT);
-            message.setText("Hello "+ name+",\n\nYou have been registered as a "+role+" on the INGRYD VOTING APPLICATION." +
+            message.setText("Hello " + name + ",\n\nYou have been registered as a " + role + " on the INGRYD VOTING APPLICATION." +
                     "\n\nFurther information will be communicated as the needs arises.\n\n\n\nThank you,\n\nSupport team.");
             mailSender.send(message);
             String messageString = message.toString();
             System.out.println(messageString);
 
-        }catch (MailException E){
-            throw new RuntimeException(E.getMessage()+"\n\nEMAIL SENDING FAILED");
+        } catch (MailException E) {
+            throw new RuntimeException(E.getMessage() + "\n\nEMAIL SENDING FAILED");
 
         }
 
     }
 
     public void sendMessage(String to, String name, String role) {
-            try {
-                MimeMessage message = mailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(message);
-                helper.setPriority(1);
-                helper.setText(MessageUtil.getVoterMessage(name, role));
-                helper.setTo(to);
-                helper.setFrom(From);
-                helper.setSubject(SUBJECT);
-                mailSender.send(message);
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setPriority(1);
+            helper.setText(MessageUtil.getVoterMessage(name, role));
+            helper.setTo(to);
+            helper.setFrom(From);
+            helper.setSubject(SUBJECT);
+            mailSender.send(message);
 
-                String messageString = message.toString();
-                log.info("mimemessage sent using 2 parameters {} and {}",name,role);
-                System.out.println(messageString);
+            String messageString = message.toString();
+            log.info("mimemessage sent using 2 parameters {} and {}", name, role);
+            System.out.println(messageString);
 
-            } catch (MessagingException e) {
-                throw new RuntimeException(e.getMessage());
-            }
+        } catch (MessagingException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public void sendCandidateMessage(CandidateEmailDetails details) {
-        log.info("sending email to candidate {}",details.getName());
-        try{
+        log.info("sending email to candidate {}", details.getName());
+        try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, UTF_8_ENCODING);
             helper.setFrom(From);
@@ -78,10 +78,11 @@ public class EmailService {
             mailSender.send(message);
 
             String messageString = message.toString();
-            log.info("mimemessage sent using candidate dto {}",details);
+            log.info("mimemessage sent using candidate dto {}", details);
             System.out.println(messageString);
-        }catch (MessagingException e){
+        } catch (MessagingException e) {
             log.error(e.getMessage());
         }
 
     }
+}
