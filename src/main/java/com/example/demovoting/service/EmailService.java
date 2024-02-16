@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class EmailService {
     public static final String SUBJECT = "welcome Onboard";
 
-    private String From = "kydjams@gmail.com";
+    private final String From = "kydjams@gmail.com";
     private static final String UTF_8_ENCODING = "UTF-8";
 
 
