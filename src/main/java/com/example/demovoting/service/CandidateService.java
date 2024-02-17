@@ -1,5 +1,6 @@
 package com.example.demovoting.service;
 
+import com.example.demovoting.dto.CandidateEmailDetails;
 import com.example.demovoting.enom.Role;
 import com.example.demovoting.model.Candidate;
 import com.example.demovoting.repository.CandidateRepository;
@@ -27,8 +28,15 @@ public class CandidateService {
 //        candidate1.setPosition(candidate.getPosition());
 //        candidate1.setRole(Role.VOTER);
         candidateRepository.save(candidate1);
-        String name = candidate1.getFirstName() + " " + candidate1.getLastName();
-        emailService.sendCandidateMessage(candidate1.getEmail(), name, candidate1.getRole().name(), candidate1.getPartyAffiliation(),candidate1.getPosition());
+        CandidateEmailDetails details = CandidateEmailDetails.builder()
+                .to(candidate1.getEmail())
+                .party(candidate1.getPartyAffiliation())
+                .role(candidate1.getRole().name())
+                .position(candidate1.getPosition())
+                .name(candidate1.getFirstName() + " " + candidate1.getLastName())
+                .build();
+        //String name = candidate1.getFirstName() + " " + candidate1.getLastName();
+        emailService.sendCandidateMessage(details);
         return candidate1;
     }
 
