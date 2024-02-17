@@ -1,5 +1,6 @@
 package com.example.demovoting.controller;
 
+import com.example.demovoting.dto.CandidateRequest;
 import com.example.demovoting.dto.UserRegistrationRequest;
 import com.example.demovoting.model.Candidate;
 import com.example.demovoting.model.Voter;
@@ -19,8 +20,8 @@ public class CandidateController {
     @Autowired
     private CandidateService candidateService;
     @PostMapping("/saveCandidate")
-    public Candidate registerCandidate(@RequestBody Candidate candidate) {
-    return candidateService.registerCandidate(candidate);
+    public Candidate registerCandidate(@RequestBody CandidateRequest request) {
+    return candidateService.registerCandidate(request);
     }
     @GetMapping("/candidate/{id}")
     public Candidate getCandidateById(@PathVariable long id){
