@@ -2,6 +2,7 @@ package com.example.demovoting.service;
 
 import com.example.demovoting.dto.CandidateEmailDetails;
 import com.example.demovoting.dto.CandidateRequest;
+
 import com.example.demovoting.enom.Role;
 import com.example.demovoting.model.Candidate;
 import com.example.demovoting.repository.CandidateRepository;
@@ -38,9 +39,10 @@ public class CandidateService {
                 .party(request.getPartyAffiliation())
                 .position(request.getPosition())
                 .role(Role.VOTER.name()).build();
-        String name = request.getFirstName() + " " + request.getLastName();
+       
+  //String name = candidate1.getFirstName() + " " + candidate1.getLastName();
         emailService.sendCandidateMessage(details);
-        return candidate;
+        return candidate1;
     }
     @Cacheable(value = "singleCandidate")
     public ResponseEntity<Optional<Candidate>> getCandidateById(long id) {
