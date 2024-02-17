@@ -20,6 +20,7 @@ import java.util.List;
 @Entity
 public class Admin implements UserDetails {
     @Id
+    @GeneratedValue
     private int Id;
 
     private String password;

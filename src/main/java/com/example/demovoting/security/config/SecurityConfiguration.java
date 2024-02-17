@@ -1,5 +1,6 @@
 package com.example.demovoting.security.config;
 
+import com.example.demovoting.enom.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +26,9 @@ public class SecurityConfiguration {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("api/v1/**")
+                        auth.requestMatchers("api/v1/voter/save","api/v1/admin/register","api/v1/admin/login")
                                 .permitAll()
+                                //.requestMatchers("api/v1/saveCandidate").hasAuthority(Authorit)
                                 .anyRequest()
                                 .authenticated())
                 .sessionManagement(session ->session
