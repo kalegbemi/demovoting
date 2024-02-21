@@ -1,5 +1,8 @@
 package com.example.demovoting.service;
 
+import com.example.demovoting.dto.ElectionPageableResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.example.demovoting.dto.ElectionRequest;
 import com.example.demovoting.dto.HttpResponse;
 import com.example.demovoting.enom.Status;
@@ -7,6 +10,7 @@ import com.example.demovoting.exception.ElectionNotFoundException;
 import com.example.demovoting.model.Election;
 import com.example.demovoting.repository.ElectionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +44,21 @@ public class ElectionService {
         return ResponseEntity.ok(election);
     }
 
-    public ResponseEntity<List<Election>> findAllElection() {
-        return ResponseEntity.ok(electionRepo.findAll());
+    public ResponseEntity<ElectionPageableResponse> findAllElection(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Election> electionPage = electionRepo.findAll(pageable);
+        List<Election> electionList = electionPage.getContent();
+
+        ElectionPageableResponse EPR = ElectionPageableResponse.builder()
+                .content(electionList)
+                .pageNo(electionPage.getNumber())
+                .pageSize(electionPage.getSize())
+                .totalPages(electionPage.getTotalPages())
+                .totalSize((int) electionPage.getTotalElements())
+                .last(electionPage.isLast())
+                .build();
+
+        return ResponseEntity.ok(EPR);
     }
 
     public ResponseEntity<Election> updateElectionById(Long id, ElectionRequest request) {
