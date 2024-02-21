@@ -1,5 +1,6 @@
 package com.example.demovoting.controller;
 
+import com.example.demovoting.dto.ElectionPageableResponse;
 import com.example.demovoting.dto.ElectionRequest;
 import com.example.demovoting.dto.HttpResponse;
 import com.example.demovoting.enom.Status;
@@ -21,8 +22,11 @@ public class ElectionController {
         private final ElectionService electionService;
 
         @GetMapping("/all")
-        public ResponseEntity<List<Election>> getAllElections(){
-            return electionService.findAllElection();
+        public ResponseEntity<ElectionPageableResponse> getAllElections(
+                @RequestParam( value = "pageNo",defaultValue = "0",required = false) int pageNo,
+                @RequestParam(value = "pageSize", defaultValue = "5",required = false) int pageSize
+        ){
+            return electionService.findAllElection(pageNo, pageSize);
         }
 
         @GetMapping("/getById")

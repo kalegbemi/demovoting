@@ -42,7 +42,7 @@ public class CandidateService {
        
   //String name = candidate1.getFirstName() + " " + candidate1.getLastName();
         emailService.sendCandidateMessage(details);
-        return candidate1;
+        return candidate;
     }
     @Cacheable(value = "singleCandidate")
     public ResponseEntity<Optional<Candidate>> getCandidateById(long id) {
