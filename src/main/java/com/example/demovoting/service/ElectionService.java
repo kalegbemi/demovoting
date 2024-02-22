@@ -36,9 +36,9 @@ public class ElectionService {
         return ResponseEntity.ok("Election created successfully\n" + election.getTitle());
     }
 
-    public List<Election> findElectionByStatusUpcoming() {
+    /*public List<Election> findElectionByStatusUpcoming() {
         return electionRepo.FindByStatusUpcoming();
-    }
+    }*/
 
     @Transactional
     public void updateElectionStatusBaseOnDate() {
