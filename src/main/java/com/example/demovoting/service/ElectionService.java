@@ -1,8 +1,6 @@
 package com.example.demovoting.service;
 
 import com.example.demovoting.dto.ElectionPageableResponse;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import com.example.demovoting.dto.ElectionRequest;
 import com.example.demovoting.dto.HttpResponse;
 import com.example.demovoting.enom.Status;
@@ -10,11 +8,14 @@ import com.example.demovoting.exception.ElectionNotFoundException;
 import com.example.demovoting.model.Election;
 import com.example.demovoting.repository.ElectionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,12 +27,22 @@ import java.util.List;
 public class ElectionService {
 
     private final ElectionRepository electionRepo;
+    //private final ElectionCrudRepo electionCrudRepo;
 
     public ResponseEntity<String> findElectionById(Long id) {
         Election election = electionRepo.findById(id).orElseThrow(
-                ()->new ElectionNotFoundException("There is no record of election with this id."));
+                () -> new ElectionNotFoundException("There is no record of election with this id."));
 
-        return ResponseEntity.ok("Election created successfully\n"+election.getTitle());
+        return ResponseEntity.ok("Election created successfully\n" + election.getTitle());
+    }
+
+    public List<Election> findElectionByStatusUpcoming() {
+        return electionRepo.FindByStatusUpcoming();
+    }
+
+    @Transactional
+    public void updateElectionStatusBaseOnDate() {
+        electionRepo.updateElectionStatusBaseOnDates();
     }
 
     public ResponseEntity<List<Election>> findElectionByStatus(Status status) {
@@ -85,7 +96,7 @@ public class ElectionService {
     }
 
     public ResponseEntity<HttpResponse> deleteElectionById(Long id) throws URISyntaxException {
-        if (!electionRepo.existsById(id)){
+        if (!electionRepo.existsById(id)) {
             throw new ElectionNotFoundException("Election not found");
         }
 
@@ -104,7 +115,7 @@ public class ElectionService {
                         .requestMethod("getMapping")
                         .path(uri.getPath())
                         .statusCode(HttpStatus.OK.value())
-                        .message("Election with ID "+id+", has been successfully deleted")
+                        .message("Election with ID " + id + ", has been successfully deleted")
                         .build()
         );
     }
